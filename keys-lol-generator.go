@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-    "os"
 	"math/big"
+	"os"
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
@@ -18,7 +18,7 @@ var (
 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE,
 		0xBA, 0xAE, 0xDC, 0xE6, 0xAF, 0x48, 0xA0, 0x3B, 0xBF, 0xD2, 0x5E, 0x8C, 0xD0, 0x36, 0x41, 0x40,
 	})
-	
+
 	one = big.NewInt(1)
 )
 
@@ -35,7 +35,7 @@ func generateKeys(count *big.Int) (keys [KeysPerPage]Key, length int) {
 	var i int
 
 	for i = 0; i < KeysPerPage; i++ {
-		
+
 		count.Add(count, one)
 
 		// Check to make sure we're not out of range
@@ -65,25 +65,25 @@ func generateKeys(count *big.Int) (keys [KeysPerPage]Key, length int) {
 }
 
 func main() {
-    // Get the first argument
+	// Get the first argument
 	pageNumber := os.Args[1]
-    
-    page, success := new(big.Int).SetString(pageNumber, 0)
-	
-    if !success {		
+
+	page, success := new(big.Int).SetString(pageNumber, 0)
+
+	if !success {
 		return
 	}
-    
-    previousPage := new(big.Int).Sub(page, one)
+
+	previousPage := new(big.Int).Sub(page, one)
 
 	// Calculate our starting seed based on the current page number
 	firstSeed := new(big.Int).Mul(previousPage, big.NewInt(KeysPerPage))
-	
+
 	keys, length := generateKeys(firstSeed)
 
 	for i := 0; i < length; i++ {
 		key := keys[i]
-		
-        fmt.Print(key.private + " " + key.number + " " +  key.uncompressed + " " + key.compressed + "\n")
+
+		fmt.Print(key.private + " " + key.number + " " + key.uncompressed + " " + key.compressed + "\n")
 	}
 }
