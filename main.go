@@ -3,11 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/big"
 	"os"
 )
-
-var one = big.NewInt(1)
 
 func main() {
 	coin := os.Args[1]
@@ -27,7 +24,17 @@ func main() {
 }
 
 func printBitcoinKeys(pageNumber string, keysPerPage int) {
-	// bitcoinKeys := generateBitcoinKeys(pageNumber, keysPerPage)
+	bitcoinKeys := generateBitcoinKeys(pageNumber, keysPerPage)
+
+	length := len(bitcoinKeys)
+
+	for i, key := range bitcoinKeys {
+		fmt.Printf("%v", key)
+
+		if i != length-1 {
+			fmt.Print("\n")
+		}
+	}
 }
 
 func printEthereumKeys(pageNumber string, keysPerPage int) {
@@ -42,14 +49,4 @@ func printEthereumKeys(pageNumber string, keysPerPage int) {
 			fmt.Print("\n")
 		}
 	}
-}
-
-func makeBigInt(number string) *big.Int {
-	i, success := new(big.Int).SetString(number, 10)
-
-	if !success {
-		log.Fatal("Failed to create BigInt from string")
-	}
-
-	return i
 }

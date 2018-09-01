@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/big"
 
 	"github.com/btcsuite/btcd/btcec"
@@ -19,12 +20,19 @@ type key struct {
 	uncompressed string
 }
 
-func generateBitcoinKeys(firstSeed *big.Int, amount int) (keys []key) {
+func generateBitcoinKeys(pageNumber string, keysPerPage int) (keys []key) {
+	basePage := new(big.Int).Sub(makeBigInt(pageNumber), one)
+
+	// convert the "int" to "string" because i dont know how to create a bigInt from an "int"
+	stringInt := fmt.Sprintf("%d", keysPerPage)
+
+	firstSeed := new(big.Int).Add(new(big.Int).Mul(basePage, makeBigInt(stringInt)), one)
+
 	var padded [32]byte
 
-	bitcoinKeys := make([]key, 0, amount)
+	bitcoinKeys := make([]key, 0, keysPerPage)
 
-	for i := 0; i < amount; i++ {
+	for i := 0; i < keysPerPage; i++ {
 		// Check to make sure we're not out of range
 		if firstSeed.Cmp(largestBitcoinSeed) > 0 {
 			break
