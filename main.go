@@ -1,30 +1,54 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"math/big"
+	"os"
 )
 
 var one = big.NewInt(1)
 
 func main() {
-	// pageNumber := os.Args[1]
+	coin := os.Args[1]
 
-	// basePage := new(big.Int).Sub(makeBigInt(pageNumber), one)
+	pageNumber := os.Args[2]
 
-	// firstSeed := new(big.Int).Add(new(big.Int).Mul(basePage, big.NewInt(keysPerPage)), one)
+	keysPerPage := 128
 
-	// keys := generateBitcoinKeys(firstSeed, keysPerPage)
+	switch coin {
+	case "btc":
+		printBitcoinKeys(pageNumber, keysPerPage)
+	case "eth":
+		printEthereumKeys(pageNumber, keysPerPage)
+	default:
+		log.Fatal("Invalid coin type")
+	}
+}
 
-	// for _, key := range keys {
-	// 	fmt.Print(key.private + " " + key.uncompressed + " " + key.compressed + "\n")
-	// }
+func printBitcoinKeys(pageNumber string, keysPerPage int) {
+	// bitcoinKeys := generateBitcoinKeys(pageNumber, keysPerPage)
+}
+
+func printEthereumKeys(pageNumber string, keysPerPage int) {
+	ethereumKeys := generateEthereumKeys(pageNumber, keysPerPage)
+
+	length := len(ethereumKeys)
+
+	for i, key := range ethereumKeys {
+		fmt.Printf("%v", key)
+
+		if i != length-1 {
+			fmt.Print("\n")
+		}
+	}
 }
 
 func makeBigInt(number string) *big.Int {
 	i, success := new(big.Int).SetString(number, 10)
 
 	if !success {
-		panic("Failed to create BigInt from string")
+		log.Fatal("Failed to create BigInt from string")
 	}
 
 	return i
