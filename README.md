@@ -1,13 +1,19 @@
 # Keys.lol generator
-Bitcoin keys generator.
+Cryptocurrency keys generator
 
-## Build
-1. Compile the `keys-lol-generator.go` using Golang
-    - `go get`
-    - `go build`
-2. Include the executable in `$PATH`
+## Building and installing
+1. cd to `~/go/src/github.com/sjorso/keys-generator`
+2. install required packages with `go get`
+3. build the executable with `go build`
+4. include the executable in `$PATH`: `sudo cp keys-generator /usr/local/bin`
 
 ## Usage
-1. Pass the page number as the first argument
-    - `shell_exec('keys-lol-generator 100')`
-2. Parse the output
+The keys generator takes two arguments: a coin type and the page number.
+
+```bash
+keys-generator btc 100
+```
+
+The following coin types are supported:
+- btc
+- eth
