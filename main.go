@@ -1,33 +1,31 @@
 package main
 
 import (
-    "fmt"
-    "math/big"
-    "os"
+	"math/big"
 )
 
-const keysPerPage = 128
+var one = big.NewInt(1)
 
 func main() {
-    pageNumber := os.Args[1]
+	// pageNumber := os.Args[1]
 
-    basePage := new(big.Int).Sub(makeBigInt(pageNumber), one)
+	// basePage := new(big.Int).Sub(makeBigInt(pageNumber), one)
 
-    firstSeed := new(big.Int).Add(new(big.Int).Mul(basePage, big.NewInt(keysPerPage)), one)
+	// firstSeed := new(big.Int).Add(new(big.Int).Mul(basePage, big.NewInt(keysPerPage)), one)
 
-    keys := generateBitcoinKeys(firstSeed, keysPerPage)
+	// keys := generateBitcoinKeys(firstSeed, keysPerPage)
 
-    for _, key := range keys {
-        fmt.Print(key.private + " " + key.uncompressed + " " + key.compressed + "\n")
-    }
+	// for _, key := range keys {
+	// 	fmt.Print(key.private + " " + key.uncompressed + " " + key.compressed + "\n")
+	// }
 }
 
 func makeBigInt(number string) *big.Int {
-    i, success := new(big.Int).SetString(number, 10)
+	i, success := new(big.Int).SetString(number, 10)
 
-    if !success {
-        panic("Failed to create BigInt from string")
-    }
+	if !success {
+		panic("Failed to create BigInt from string")
+	}
 
-    return i
+	return i
 }
