@@ -18,6 +18,8 @@ func main() {
 		printBtcWifSearch(os.Args[2], keysPerPage)
 	case "eth":
 		printEthereumKeys(os.Args[2], keysPerPage)
+	case "eth-search":
+		printEthPrivateKeySearch(os.Args[2], keysPerPage)
 	default:
 		log.Fatal("Invalid coin type")
 	}
@@ -55,4 +57,10 @@ func printEthereumKeys(pageNumber string, keysPerPage int) {
 			fmt.Print("\n")
 		}
 	}
+}
+
+func printEthPrivateKeySearch(privateKey string, keysPerPage int) {
+	pageNumber := findEthPrivateKeyPage(privateKey, keysPerPage)
+
+	fmt.Printf("%v", pageNumber)
 }

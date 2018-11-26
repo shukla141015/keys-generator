@@ -294,3 +294,55 @@ func Test_generateEthereumKeys(t *testing.T) {
 		})
 	}
 }
+
+func Test_findEthPrivateKeyPage(t *testing.T) {
+	type args struct {
+		privateKey  string
+		keysPerPage int
+	}
+
+	tests := []struct {
+		name     string
+		args     args
+		wantPage string
+	}{
+		{
+			"It can find the page that a random private key is on",
+			args{"e44a4bdc91d35496190474dca11338059ffbab72d3a72f195c4a030632d49503", 128},
+			"806707810447654934665982607721811039665835129933115297248770801612223785259",
+		},
+		{
+			"It can find a key on the first page",
+			args{"0000000000000000000000000000000000000000000000000000000000000001", 128},
+			"1",
+		},
+		{
+			"It can find the first key on the first page",
+			args{"0000000000000000000000000000000000000000000000000000000000000000", 128},
+			"1",
+		},
+		{
+			"It can find a key on the last page",
+			args{"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140", 128},
+			"904625697166532776746648320380374280100293470930272690489102837043110636675",
+		},
+		{
+			"It can find the last key on the last page",
+			args{"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036415f", 128},
+			"904625697166532776746648320380374280100293470930272690489102837043110636675",
+		},
+		{
+			"It can find a key beyond the last page",
+			args{"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 128},
+			"904625697166532776746648320380374280103671755200316906558262375061821325312",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotPage := findEthPrivateKeyPage(tt.args.privateKey, tt.args.keysPerPage); !reflect.DeepEqual(gotPage, tt.wantPage) {
+				t.Errorf("Expected: %v", tt.wantPage)
+				t.Errorf("Actual:   %v", gotPage)
+			}
+		})
+	}
+}

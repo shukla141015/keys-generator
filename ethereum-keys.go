@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/big"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/crypto"
 )
@@ -86,4 +87,22 @@ func generateEthereumKeys(pageNumber string, keysPerPage int) (keys []ethereumKe
 	}
 
 	return ethereumKeys
+}
+
+func findEthPrivateKeyPage(privateKey string, keysPerPage int) string {
+	hex := strings.TrimLeft(privateKey, "0")
+
+	if hex == "" {
+		return "1"
+	}
+
+	baseBigInt, _ := new(big.Int).SetString(hex, 16)
+
+	kppBigInt, _ := new(big.Int).SetString(fmt.Sprintf("%d", keysPerPage), 10)
+
+	divided, _ := new(big.Int).DivMod(baseBigInt, kppBigInt, kppBigInt)
+
+	finalBigInt := new(big.Int).Add(divided, one)
+
+	return fmt.Sprintf("%d", finalBigInt)
 }
