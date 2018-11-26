@@ -9,15 +9,15 @@ import (
 func main() {
 	coin := os.Args[1]
 
-	pageNumber := os.Args[2]
-
 	keysPerPage := 128
 
 	switch coin {
 	case "btc":
-		printBitcoinKeys(pageNumber, keysPerPage)
+		printBitcoinKeys(os.Args[2], keysPerPage)
+	case "btc-search":
+		printBtcWifSearch(os.Args[2], keysPerPage)
 	case "eth":
-		printEthereumKeys(pageNumber, keysPerPage)
+		printEthereumKeys(os.Args[2], keysPerPage)
 	default:
 		log.Fatal("Invalid coin type")
 	}
@@ -35,6 +35,12 @@ func printBitcoinKeys(pageNumber string, keysPerPage int) {
 			fmt.Print("\n")
 		}
 	}
+}
+
+func printBtcWifSearch(wif string, keysPerPage int) {
+	pageNumber := findBtcWifPage(wif, keysPerPage)
+
+	fmt.Printf("%v", pageNumber)
 }
 
 func printEthereumKeys(pageNumber string, keysPerPage int) {

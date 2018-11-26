@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"math/big"
-
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil"
+	"log"
+	"math/big"
 )
 
 var largestBitcoinSeed = new(big.Int).SetBytes([]byte{
@@ -61,4 +61,21 @@ func generateBitcoinKeys(pageNumber string, keysPerPage int) (keys []key) {
 	}
 
 	return bitcoinKeys
+}
+
+func findBtcWifPage(wifString string, keysPerPage int) string {
+	wif, err := btcutil.DecodeWIF(wifString)
+
+	if err != nil {
+		log.Fatal("Error decoding WIF")
+	}
+
+	// convert the "int" to "string" because i dont know how to create a bigInt from an "int"
+	stringInt := fmt.Sprintf("%d", keysPerPage)
+
+	page, _ := new(big.Int).DivMod(new(big.Int).SetBytes(wif.PrivKey.D.Bytes()), makeBigInt(stringInt), makeBigInt(stringInt))
+
+	page.Add(page, one)
+
+	return page.String()
 }

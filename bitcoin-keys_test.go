@@ -125,3 +125,40 @@ func Test_generateBitcoinKeys(t *testing.T) {
 		})
 	}
 }
+
+func Test_findBtcWifPage(t *testing.T) {
+	type args struct {
+		wifString   string
+		keysPerPage int
+	}
+
+	tests := []struct {
+		name     string
+		args     args
+		wantPage string
+	}{
+		{
+			"It can find the page that a random WIF is on",
+			args{"5KQkycVaH2urSTz9CQ4fGdWz3a5n9TFKLDwxzREv8tBtcXYW9Ua", 128},
+			"741968862012117112677494014490987968047399326671284349197372731288562495168",
+		},
+		{
+			"It can find a WIF on the first page",
+			args{"5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf", 128},
+			"1",
+		},
+		{
+			"It can find a WIF on the last page",
+			args{"5Km2kuu7vtFDPpxywn4u3NLpbr5jKpTB3jsuDU2KYEqetqj84qw", 128},
+			"904625697166532776746648320380374280100293470930272690489102837043110636675",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotPage := findBtcWifPage(tt.args.wifString, tt.args.keysPerPage); !reflect.DeepEqual(gotPage, tt.wantPage) {
+				t.Errorf("Expected: %v", tt.wantPage)
+				t.Errorf("Actual: %v", gotPage)
+			}
+		})
+	}
+}
