@@ -5,7 +5,6 @@ import (
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil"
-	"log"
 	"math/big"
 )
 
@@ -67,7 +66,7 @@ func findBtcWifPage(wifString string, keysPerPage int) string {
 	wif, err := btcutil.DecodeWIF(wifString)
 
 	if err != nil {
-		log.Fatal("Error decoding WIF")
+		return "Error: could not decoding WIF"
 	}
 
 	// convert the "int" to "string" because i dont know how to create a bigInt from an "int"
