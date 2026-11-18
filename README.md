@@ -10,6 +10,12 @@ The code for the website is in a [separate repository](https://github.com/SjorsO
 4. include the executable in `$PATH`: `sudo cp keys-generator /usr/local/bin`
 
 ## Usage
+
+Use these commands with disposable test keys only. Anyone who selects the same
+page gets the same keys, so never send funds to an address printed by the generator.
+The search commands take a private key as a command-line argument, which may be
+saved in shell history or visible to other processes. Never enter a real wallet key.
+
 For generating keys, run:
 
 ```bash
